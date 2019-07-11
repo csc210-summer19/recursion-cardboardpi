@@ -78,7 +78,52 @@ public class ObstacleCourse {
 		// Do not forget to set the instance variable foundRow and
 		// foundCol in this method when the exit is found.
 		//
-		return !false;
+		boolean escaped = false;
+		// Check if '+' then immediately returns false
+		if (course[row][col] == '+')
+			return escaped;
+		// Checks if there is a possibilty to escape with ' '
+		if (course[row][col] == ' ') {
+			course[row][col] = TRIED;
+			// If the current location is on the border we have escaped
+			// and sets found locations
+			if (onTheBorder(row, col)) {
+				escaped = true;
+				foundCol = col;
+				foundRow = row;
+			}
+			// Check all possible locations to move (down, right, up, and left)
+			else {
+				if (!escaped) { // Escape below
+					escaped = findExit(row + 1, col);
+				}
+				if (!escaped) { // Escape right
+					escaped = findExit(row, col + 1);
+				}
+				if (!escaped) { // Escape above
+					escaped = findExit(row - 1, col);
+				}
+				if (!escaped) { // Escape left
+					escaped = findExit(row, col - 1);
+				}
+			}
+			// If escaped set current location to have a new path char
+			if (escaped) {
+				course[row][col] = PART_OF_PATH;
+			}
+		}
+		return escaped;
+	}
+
+	// Used to check if a location is on the border for simple calculation in
+	// findExit
+	private boolean onTheBorder(int row, int col) {
+		if (row == 0 || row == course.length - 1)
+			return true;
+		else if (col == 0 || col == course[0].length - 1)
+			return true;
+
+		return false;
 	}
 
 }
