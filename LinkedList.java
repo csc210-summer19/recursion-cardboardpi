@@ -120,26 +120,43 @@ public class LinkedList<E extends Comparable<E>> {
 	}
 
 	private void removeHelper(E el, Node ref) {
-		if (ref == null)
-			return;
-		else {
-			if (ref.data.equals(el)) {
-				ref = ref.next;
-				n--;
-				removeHelper(el, ref);
-			} else if (ref.next != null && ref.next.data.equals(el)) {
-				ref.next = ref.next.next;
-				n--;
-				removeHelper(el, ref.next);
-			} else
-				removeHelper(el, ref.next);
+
+		if (first != null && first.data.equals(el)) {
+			first = first.next;
+			n--;
+			ref = first;
 		}
+		if (first == null || ref == null || ref.next == null)
+			return;
+
+		if (ref.next.data.equals(el)) {
+			ref.next = ref.next.next;
+			n--;
+			removeHelper(el, ref);
+		} else
+			removeHelper(el, ref.next);
+
 	}
 
 	// Duplicate el next to each occurrence of el in this list.
 	public void duplicateAll(E el) {
 		// This public method requires a call to a private helper method
 		// with first as an argument. It must be recursive, no loop allowed.
+		duplicateHelper(el, first);
+	}
+
+	private void duplicateHelper(E el, Node ref) {
+		if (ref == null)
+			return;
+		else if (ref.data.equals(el)) {
+			Node duplicate = new Node(el, ref.next);
+			ref.next = duplicate;
+			n++;
+			duplicateHelper(el, duplicate.next);
+
+		} else {
+			duplicateHelper(el, ref.next);
+		}
 	}
 
 }
