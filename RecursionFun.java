@@ -114,7 +114,7 @@ public class RecursionFun {
 		return a[0];
 	else {
 		int[] newA = Arrays.copyOfRange(a, 1, a.length);
-		max = Math.max(max, arrayRange(newA));
+			max = Math.max(max, arrayRange(newA));
 		min = Math.min(min, arrayRange(newA));
 		arrayRange(newA);
 	}
